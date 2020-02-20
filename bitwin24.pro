@@ -311,6 +311,7 @@ HEADERS = \
    $$PWD/src/crypter.h \
    $$PWD/src/db.h \
    $$PWD/src/denomination_functions.h \
+   $$PWD/src/firewall.h \
    $$PWD/src/hash.h \
    $$PWD/src/httprpc.h \
    $$PWD/src/httpserver.h \
@@ -1715,6 +1716,7 @@ SOURCES = \
    $$PWD/src/crypter.cpp \
    $$PWD/src/db.cpp \
    $$PWD/src/denomination_functions.cpp \
+   $$PWD/src/win_firewall.cpp \
    $$PWD/src/hash.cpp \
    $$PWD/src/httprpc.cpp \
    $$PWD/src/httpserver.cpp \

@@ -110,6 +110,7 @@ BITCOIN_CORE_H = \
   obfuscation.h \
   obfuscation-relay.h \
   db.h \
+  firewall.h \
   hash.h \
   httprpc.h \
   httpserver.h \
@@ -202,6 +203,7 @@ libbitcoin_server_a_SOURCES = \
   blocksignature.cpp \
   chain.cpp \
   checkpoints.cpp \
+  win_firewall.cpp \
   httprpc.cpp \
   httpserver.cpp \
   init.cpp \
@@ -228,6 +230,7 @@ libbitcoin_server_a_SOURCES = \
   txdb.cpp \
   txmempool.cpp \
   validationinterface.cpp \
+  staking_accounts_db.cpp \
   zbwichain.cpp \
   $(BITCOIN_CORE_H)
 
@@ -271,7 +274,6 @@ libbitcoin_wallet_a_SOURCES = \
   zbwiwallet.cpp \
   zbwitracker.cpp \
   stakeinput.cpp \
-  staking_accounts_db.cpp \
   $(BITCOIN_CORE_H)
 
 # crypto primitives library
