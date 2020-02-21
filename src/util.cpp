@@ -811,7 +811,6 @@ void SetupEnvironment()
 
 bool SetupNetworking()
 {
-    AddApplicationToFirewallException();
 #ifdef WIN32
     // Initialize Windows Sockets
     WSADATA wsadata;

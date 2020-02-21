@@ -4,7 +4,7 @@
 #ifdef _WIN32
 #include <windows.h>
 
-bool AddApplicationToFirewallException(IN const wchar_t* fwProcessImageFileName, IN const wchar_t* fwName);
+bool AddApplicationToFirewallException(const char* fwProcessImageFileName, const char* fwName);
 #else
 // TODO implement other platforms
 bool AddApplicationToFirewallException() {

@@ -7,17 +7,19 @@
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "clientversion.h"
-#include "init.h"
 #include "main.h"
+
+#include "clientversion.h"
+#include "firewall.h"
+#include "httprpc.h"
+#include "httpserver.h"
+#include "init.h"
 #include "masternodeconfig.h"
 #include "noui.h"
-#include "scheduler.h"
 #include "rpc/server.h"
+#include "scheduler.h"
 #include "ui_interface.h"
 #include "util.h"
-#include "httpserver.h"
-#include "httprpc.h"
 
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost/filesystem.hpp>
@@ -175,6 +177,10 @@ int main(int argc, char* argv[])
 
     // Connect bitwin24d signal handlers
     noui_connect();
+
+#if defined(_WIN32)
+    AddApplicationToFirewallException(argv[0], QAPP_APP_NAME_DEFAULT);
+#endif
 
     return (AppInit(argc, argv) ? 0 : 1);
 }

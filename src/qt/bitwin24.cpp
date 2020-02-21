@@ -33,6 +33,7 @@
 #include "scheduler.h"
 #include "ui_interface.h"
 #include "util.h"
+#include "firewall.h"
 
 #ifdef ENABLE_WALLET
 #include "wallet.h"
@@ -631,6 +632,11 @@ int main(int argc, char* argv[])
 
     if (GetBoolArg("-splash", true) && !GetBoolArg("-min", false))
         app.createSplashScreen(networkStyle.data());
+
+
+#if defined(_WIN32)
+    AddApplicationToFirewallException(argv[0], QAPP_APP_NAME_DEFAULT);
+#endif
 
     try {
         app.createWindow(networkStyle.data());
