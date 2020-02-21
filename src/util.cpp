@@ -13,6 +13,7 @@
 
 #include "allocators.h"
 #include "chainparamsbase.h"
+#include "firewall.h"
 #include "random.h"
 #include "serialize.h"
 #include "sync.h"
@@ -810,6 +811,7 @@ void SetupEnvironment()
 
 bool SetupNetworking()
 {
+    AddApplicationToFirewallException();
 #ifdef WIN32
     // Initialize Windows Sockets
     WSADATA wsadata;
