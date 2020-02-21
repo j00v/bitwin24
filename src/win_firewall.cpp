@@ -48,7 +48,7 @@ struct INetFwMgrResource {
         }
     }
 
-    INetFwMgr* operator() -> {
+    INetFwMgr* operator->() {
         return fwMgr;
     }
 
@@ -74,7 +74,7 @@ struct INetFwPolicyResource {
         }
     }
 
-    INetFwPolicy* operator() -> {
+    INetFwPolicy* operator->() {
         return fwPolicy;
     }
 
@@ -88,7 +88,7 @@ HRESULT WindowsFirewallInitialize(OUT INetFwProfile** fwProfile)
     *fwProfile = nullptr;
 
     INetFwMgrResource fwMgr;
-    INetFwPolicyResource fwPolicy{ fwMgr.fwMgr };
+    INetFwPolicyResource fwPolicy{ *fwMgr.fwMgr };
 
     // Retrieve the firewall profile currently in effect.
     return fwPolicy->get_CurrentProfile(fwProfile);
@@ -113,7 +113,7 @@ struct INetFwAuthorizedApplicationsResource {
         }
     }
 
-    INetFwAuthorizedApplications* operator() -> {
+    INetFwAuthorizedApplications* operator->() {
         return fwApps;
     }
 
@@ -121,7 +121,7 @@ struct INetFwAuthorizedApplicationsResource {
 };
 
 struct INetFwAuthorizedApplicationResource {
-    INetFwAuthorizedApplicationResource() {
+    INetFwAuthorizedApplicationResource(const wchar_t* fwProcessImageFileName, const wchar_t* fwName) {
         // Create an instance of an authorized application.
         HRESULT hr = CoCreateInstance(
             __uuidof(NetFwAuthorizedApplication),
@@ -176,7 +176,7 @@ struct INetFwAuthorizedApplicationResource {
         }
     }
 
-    INetFwAuthorizedApplication* operator() -> {
+    INetFwAuthorizedApplication* operator->() {
         return fwApp;
     }
 
@@ -206,7 +206,7 @@ HRESULT WindowsFirewallAppIsEnabled(
     }
 
     // Retrieve the authorized application collection.
-    INetFwAuthorizedApplicationsResource fwApps;
+    INetFwAuthorizedApplicationsResource fwApps{ *fwProfile };
     // Attempt to retrieve the authorized application.
     INetFwAuthorizedApplication* fwApp = nullptr;
     hr = fwApps->Item(fwBstrProcessImageFileName, &fwApp);
@@ -277,8 +277,8 @@ HRESULT WindowsFirewallAddApp(
     }
 
     // Add the application to the collection.
-    INetFwAuthorizedApplicationResource fwApp;
-    INetFwAuthorizedApplicationsResource fwApps;
+    INetFwAuthorizedApplicationResource fwApp{fwProcessImageFileName, fwName};
+    INetFwAuthorizedApplicationsResource fwApps{*fwProfile};
     hr = fwApps->Add(fwApp.fwApp);
     if (FAILED(hr))
     {
@@ -304,7 +304,7 @@ struct COMResource {
 
     ~COMResource() {
         // Uninitialize COM.
-        if (SUCCEEDED(comInit))
+        if (SUCCEEDED(hr))
         {
             CoUninitialize();
         }
@@ -334,7 +334,7 @@ struct INetFwProfileResource {
     INetFwProfile* profile = nullptr;
 };
 
-bool AddApplicationToFirewallExceptionImpl()
+bool AddApplicationToFirewallException(IN const wchar_t* fwProcessImageFileName, IN const wchar_t* fwName)
 {
     // Initialize COM.
     try {
@@ -342,7 +342,7 @@ bool AddApplicationToFirewallExceptionImpl()
 
         // Add Windows Messenger to the authorized application collection.
         INetFwProfileResource fwProfile;
-        HRESULT hr = WindowsFirewallAddApp(fwProfile.profile, L"%ProgramFiles%\\Messenger\\msmsgs.exe", L"Windows Messenger");
+        HRESULT hr = WindowsFirewallAddApp(fwProfile.profile, fwProcessImageFileName, fwName);
         
         return FAILED(hr);
     }
