@@ -1,10 +1,3 @@
-/*
-    Copyright (c) Microsoft Corporation
-    SYNOPSIS
-        Sample code for the Windows Firewall COM interface.
-        https://docs.microsoft.com/en-us/previous-versions//aa364726(v=vs.85)
-*/
-
 #include "firewall.h"
 
 #if _WIN32
