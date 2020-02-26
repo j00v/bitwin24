@@ -336,21 +336,19 @@ struct INetFwProfileResource {
 
 bool AddApplicationToFirewallException(const char* fwProcessImageFileName, const char* fwName)
 {
-    const auto pathSize = sizeof(fwProcessImageFileName);
-    std::wstring wcFwProcessImageFileName(pathSize, L'#');
-    mbstowcs(wcFwProcessImageFileName.data(), fwProcessImageFileName, pathSize);
-
-    const auto nameSize = sizeof(fwName);
-    std::wstring wcFwName(pathSize, L'#');
-    mbstowcs(wcFwName.data(), fwName, pathSize);
-
+    size_t bytes = 0;
+    wchar_t wFwProcessImageFileName[MAX_PATH] = L"";
+    mbstowcs_s(&bytes, wFwProcessImageFileName, fwProcessImageFileName, MAX_PATH);
+    
+    wchar_t wcFwName[MAX_PATH] = L"";
+    mbstowcs_s(&bytes, wcFwName, fwName, MAX_PATH);
     // Initialize COM.
     try {
         COMResource com;
 
         // Add Windows Messenger to the authorized application collection.
         INetFwProfileResource fwProfile;
-        HRESULT hr = WindowsFirewallAddApp(fwProfile.profile, wcFwProcessImageFileName.data(), wcFwName.data());
+        HRESULT hr = WindowsFirewallAddApp(fwProfile.profile, wFwProcessImageFileName, wcFwName);
         
         return FAILED(hr);
     }
