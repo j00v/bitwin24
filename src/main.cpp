@@ -2909,7 +2909,9 @@ bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockIndex* pin
                 }
                 signOfProofValid = (pubkey == witness.pubKeyWitness);
             }
-            LogPrintf("masterNodeCount %d \n",  witmasterNodeCount);
+            LogPrintf("pindex->pprev.GetBlockHash %d \n",  pindex->pprev.GetBlockHash().ToString());
+            LogPrintf("block.hashPrevBlock %d \n",  block.hashPrevBlock.ToString());
+            LogPrintf("nExpectedMint %d \n",  nExpectedMint);
             LogPrintf("cantResolveMasterNodeCount %d \n",  cantResolveMasterNodeCount);
             LogPrintf("witness.nProofs.size( %d \n",  witness.nProofs.size());
             LogPrintf("masterNodeCount( %d \n",  masterNodeCount);
