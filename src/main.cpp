@@ -2859,7 +2859,8 @@ bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockIndex* pin
         nExpectedMint += nFees;
     if (pindex->pprev->nHeight >= START_HEIGHT_REWARD_BASED_ON_MN_COUNT) {
         // default value for accept without check
-        nExpectedMint = pindex->nMoneySupply - pindex->pprev->nMoneySupply;
+//        nExpectedMint = pindex->nMoneySupply - pindex->pprev->nMoneySupply;
+        nExpectedMint = pindex->nMint;
         int errorCode = 0;
         int masterNodeCount = GetMasterNodeCountBasedOnBlockReward(pindex->pprev->nHeight, nExpectedMint, errorCode);
         bool cantResolveMasterNodeCount = (errorCode != 0);
@@ -2909,7 +2910,7 @@ bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockIndex* pin
                 }
                 signOfProofValid = (pubkey == witness.pubKeyWitness);
             }
-            LogPrintf("pindex->pprev.GetBlockHash %d \n",  pindex->pprev.GetBlockHash().ToString());
+            LogPrintf("pindex->pprev.GetBlockHash %d \n",  pindex->pprev->GetBlockHash().ToString());
             LogPrintf("block.hashPrevBlock %d \n",  block.hashPrevBlock.ToString());
             LogPrintf("nExpectedMint %d \n",  nExpectedMint);
             LogPrintf("cantResolveMasterNodeCount %d \n",  cantResolveMasterNodeCount);
