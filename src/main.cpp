@@ -2909,13 +2909,21 @@ bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockIndex* pin
                 }
                 signOfProofValid = (pubkey == witness.pubKeyWitness);
             }
+            LogPrintf("masterNodeCount %d \n",  witmasterNodeCount);
+            LogPrintf("cantResolveMasterNodeCount %d \n",  cantResolveMasterNodeCount);
+            LogPrintf("witness.nProofs.size( %d \n",  witness.nProofs.size());
+            LogPrintf("masterNodeCount( %d \n",  masterNodeCount);
+            LogPrintf("signOfProofValid %d \n",  signOfProofValid);
+            LogPrintf("witness.IsValid(block.nTime) %d \n",  witness.IsValid(block.nTime));
+            LogPrintf("block.nTime) %d \n",  block.nTime);
+
             if (witness.nProofs.size() != masterNodeCount
                 || !witness.IsValid(block.nTime)
                 || !witness.SignatureValid()
                 || !signOfProofValid) {
                 return state.DoS(
                     100,
-                    error("ConnectBlock() : not valid proof or unexpected number of master nodes in proof: %s",
+                    error("ConnectBlock() : not valid proof or unexpected number of master nodes in proof: %s\n",
                           witness.ToString()),
                     REJECT_INVALID,
                     "bad-cb-proof");
