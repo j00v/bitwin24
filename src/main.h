@@ -617,6 +617,10 @@ bool InvalidateBlock(CValidationState& state, CBlockIndex* pindex);
 /** Remove invalidity status from a block and its descendants. */
 bool ReconsiderBlock(CValidationState& state, CBlockIndex* pindex);
 
+CBlockIndex* AddToBlockIndex(const CBlock& block);
+
+bool ConnectTip(CValidationState& state, CBlockIndex* pindexNew, CBlock* pblock, bool fAlreadyChecked);
+
 /** The currently-connected chain of blocks. */
 extern CChain chainActive;
 
